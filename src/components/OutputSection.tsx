@@ -290,7 +290,7 @@ const OutputSection: React.FC<OutputSectionProps> = ({ input, selectedPlatform, 
         )}
 
         {/* Action buttons */}
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <button
             onClick={handleCopy}
             className={`relative flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 hover:scale-105 active:scale-98 ${

@@ -67,10 +67,10 @@ const InputSection: React.FC<InputSectionProps> = ({
           isDarkMode ? 'text-slate-100' : 'text-gray-900'
         }`}>Your Content</h3>
         
-        <div className="flex gap-2">
+        <div className="flex flex-wrap justify-end gap-2">
           <button
             onClick={handlePasteFromClipboard}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium border transition-all duration-200 hover:scale-105 ${
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium border transition-all duration-200 hover:scale-105 ${
               isDarkMode ? 'focus-ring-dark' : 'focus-ring'
             } ${
               showPasteSuccess
@@ -99,7 +99,7 @@ const InputSection: React.FC<InputSectionProps> = ({
           
           <button
             onClick={() => onInputChange(`We're launching our new design system that helps teams build consistent user interfaces. After months of research and development, we've created a comprehensive library of components, patterns, and guidelines. The system includes over 50 reusable components, detailed documentation, and automatic code generation. Teams using our design system report 60% faster development time and significantly improved consistency across products.`)}
-            className={`text-xs underline transition-colors duration-200 rounded px-1 ${
+            className={`text-xs underline transition-colors duration-200 rounded px-1 whitespace-nowrap ${
               isDarkMode ? 'focus-ring-dark' : 'focus-ring'
             } ${
               isDarkMode 
@@ -114,7 +114,7 @@ const InputSection: React.FC<InputSectionProps> = ({
           {input && (
             <button
               onClick={handleClear}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium border transition-all duration-200 hover:scale-105 ${
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium border transition-all duration-200 hover:scale-105 ${
                 isDarkMode ? 'focus-ring-dark' : 'focus-ring'
               } ${
                 isDarkMode 

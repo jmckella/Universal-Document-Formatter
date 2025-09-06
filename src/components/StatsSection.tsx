@@ -72,7 +72,7 @@ const StatsSection: React.FC<StatsSectionProps> = ({
   return (
     <div className="space-y-6">
       {/* Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className={`rounded-2xl shadow-lg p-6 border transition-all duration-300 ${
           isDarkMode 
             ? 'bg-slate-800 border-slate-700' 
