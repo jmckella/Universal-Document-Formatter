@@ -6,6 +6,7 @@ import InputSection from './components/InputSection';
 import PlatformSelector from './components/PlatformSelector';
 import OutputSection from './components/OutputSection';
 import StatsSection from './components/StatsSection';
+import TabNavigation from './components/TabNavigation';
 import { FocusManagementProvider } from './components/FocusManagementProvider';
 import { Platform } from './utils/formatters';
 import { useDarkMode } from './hooks/useDarkMode';
@@ -32,14 +33,12 @@ function App() {
       <Header 
         isDarkMode={isDarkMode} 
         toggleDarkMode={toggleDarkMode}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
       />
       
       <main 
         id="main-content"
         tabIndex={-1}
-        className={`max-w-7xl mx-auto px-6 py-8 space-y-8 transition-all duration-300 outline-none ${
+        className={`max-w-7xl mx-auto px-6 py-8 pb-24 space-y-8 transition-all duration-300 outline-none ${
           isDarkMode ? 'bg-slate-900' : 'bg-white'
         }`}
         aria-label="Document formatter application"
@@ -108,6 +107,12 @@ function App() {
           Report issue
         </a>
       </footer>
+      
+      <TabNavigation 
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        isDarkMode={isDarkMode}
+      />
     </div>
     </FocusManagementProvider>
   );

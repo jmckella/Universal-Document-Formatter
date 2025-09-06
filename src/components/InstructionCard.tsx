@@ -22,14 +22,14 @@ const InstructionCard: React.FC = () => {
         <h2 className={`text-2xl font-semibold mb-3 transition-all duration-300 ${
           isDarkMode ? 'text-slate-100' : 'text-gray-900'
         }`}>How it works</h2>
-        <div className="flex items-center justify-center space-x-8 text-lg">
+        <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-sm sm:text-lg">
           <div className="flex items-center space-x-2">
             <span className="text-2xl">1️⃣</span>
             <span className={`font-medium transition-all duration-300 ${
               isDarkMode ? 'text-slate-300' : 'text-gray-700'
             }`}>Paste your content</span>
           </div>
-          <div className={`hidden sm:block w-8 h-px transition-all duration-300 ${
+          <div className={`hidden lg:block w-8 h-px transition-all duration-300 ${
             isDarkMode ? 'bg-slate-600' : 'bg-gray-300'
           }`}></div>
           <div className="flex items-center space-x-2">
@@ -38,7 +38,7 @@ const InstructionCard: React.FC = () => {
               isDarkMode ? 'text-slate-300' : 'text-gray-700'
             }`}>Choose a platform</span>
           </div>
-          <div className={`hidden sm:block w-8 h-px transition-all duration-300 ${
+          <div className={`hidden lg:block w-8 h-px transition-all duration-300 ${
             isDarkMode ? 'bg-slate-600' : 'bg-gray-300'
           }`}></div>
           <div className="flex items-center space-x-2">
