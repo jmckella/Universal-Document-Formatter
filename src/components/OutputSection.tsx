@@ -8,6 +8,7 @@ interface OutputSectionProps {
   input: string;
   selectedPlatform: Platform;
   isDarkMode: boolean;
+  recordCopy: (platform: Platform, characterCount: number) => void;
 }
 
 const platformConfig = {
@@ -43,8 +44,8 @@ const platformConfig = {
   }
 };
 
-const OutputSection: React.FC<OutputSectionProps> = ({ input, selectedPlatform, isDarkMode }) => {
-  const { copyToClipboard, copiedStates, copyCount } = useClipboard();
+const OutputSection: React.FC<OutputSectionProps> = ({ input, selectedPlatform, isDarkMode, recordCopy }) => {
+  const { copyToClipboard, copiedStates } = useClipboard();
   const { announce } = useFocusManagementContext();
   const [rotatingTipIndex, setRotatingTipIndex] = useState(0);
   
@@ -71,7 +72,9 @@ const OutputSection: React.FC<OutputSectionProps> = ({ input, selectedPlatform, 
     : 1;
 
   const handleCopy = async () => {
-    await copyToClipboard(formattedContent.text, selectedPlatform);
+    await copyToClipboard(formattedContent.text, selectedPlatform, () => {
+      recordCopy(selectedPlatform, formattedContent.charCount);
+    });
     announce(`Content copied for ${selectedPlatform}`, 'polite');
   };
 
@@ -288,7 +291,6 @@ const OutputSection: React.FC<OutputSectionProps> = ({ input, selectedPlatform, 
 
         {/* Action buttons */}
         <div className="flex gap-3">
-          <div className="flex items-center gap-2">
           <button
             onClick={handleCopy}
             className={`relative flex-1 flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 hover:scale-105 active:scale-98 ${
@@ -315,14 +317,6 @@ const OutputSection: React.FC<OutputSectionProps> = ({ input, selectedPlatform, 
               </>
             )}
           </button>
-            {copyCount[selectedPlatform] > 0 && (
-              <span className={`text-xs ml-2 transition-all duration-300 ${
-                isDarkMode ? 'text-slate-400' : 'text-gray-500'
-              } ${!isDarkMode ? 'text-gray-700' : ''}`}>
-                Copied {copyCount[selectedPlatform]} time{copyCount[selectedPlatform] !== 1 ? 's' : ''}
-              </span>
-            )}
-          </div>
           
           <button
             onClick={handleDownload}

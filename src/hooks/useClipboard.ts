@@ -9,38 +9,16 @@ export const useClipboard = () => {
     whatsapp: false,
     instagram: false,
   });
-  
-  const [copyCount, setCopyCount] = useState<Record<Platform, number>>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('copyCount');
-      if (saved) {
-        try {
-          return JSON.parse(saved);
-        } catch {
-          // Fall back to default if parsing fails
-        }
-      }
-    }
-    return {
-      linkedin: 0,
-      twitter: 0,
-      email: 0,
-      whatsapp: 0,
-      instagram: 0,
-    };
-  });
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('copyCount', JSON.stringify(copyCount));
-    }
-  }, [copyCount]);
-
-  const copyToClipboard = async (text: string, platform: Platform) => {
+  const copyToClipboard = async (text: string, platform: Platform, onSuccess?: () => void) => {
     try {
       await navigator.clipboard.writeText(text);
       setCopiedStates(prev => ({ ...prev, [platform]: true }));
-      setCopyCount(prev => ({ ...prev, [platform]: prev[platform] + 1 }));
+      
+      // Call the success callback if provided
+      if (onSuccess) {
+        onSuccess();
+      }
       
       // Reset after 2 seconds
       setTimeout(() => {
@@ -54,6 +32,5 @@ export const useClipboard = () => {
   return {
     copyToClipboard,
     copiedStates,
-    copyCount,
   };
 };

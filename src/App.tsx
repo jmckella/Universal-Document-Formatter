@@ -5,16 +5,20 @@ import InstructionCard from './components/InstructionCard';
 import InputSection from './components/InputSection';
 import PlatformSelector from './components/PlatformSelector';
 import OutputSection from './components/OutputSection';
+import StatsSection from './components/StatsSection';
 import { FocusManagementProvider } from './components/FocusManagementProvider';
 import { Platform } from './utils/formatters';
 import { useDarkMode } from './hooks/useDarkMode';
-import { useClipboard } from './hooks/useClipboard';
+import { useAnalytics } from './hooks/useAnalytics';
 
 function App() {
   const [input, setInput] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState<Platform>('linkedin');
+  const [activeTab, setActiveTab] = useState<'formatter' | 'stats'>('formatter');
   const { isDarkMode, toggleDarkMode } = useDarkMode();
-  const { copyCount } = useClipboard();
+  const { recordCopy, getAnalyticsSummary, clearAnalytics, copyCount } = useAnalytics();
+  
+  const analyticsSummary = getAnalyticsSummary();
 
   return (
     <FocusManagementProvider>
@@ -25,7 +29,12 @@ function App() {
     }`}>
       <SkipLinks isDarkMode={isDarkMode} />
       
-      <Header isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+      <Header 
+        isDarkMode={isDarkMode} 
+        toggleDarkMode={toggleDarkMode}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+      />
       
       <main 
         id="main-content"
@@ -35,35 +44,52 @@ function App() {
         }`}
         aria-label="Document formatter application"
       >
-        <InstructionCard />
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-6">
-            <InputSection
-              input={input}
-              onInputChange={setInput}
-              selectedPlatform={selectedPlatform}
-              isDarkMode={isDarkMode}
-            />
+        {activeTab === 'formatter' ? (
+          <>
+            <InstructionCard />
             
-            <div id="platform-selector">
-              <PlatformSelector
-                selectedPlatform={selectedPlatform}
-                onPlatformChange={setSelectedPlatform}
-                copyCount={copyCount}
-                isDarkMode={isDarkMode}
-              />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="space-y-6">
+                <InputSection
+                  input={input}
+                  onInputChange={setInput}
+                  selectedPlatform={selectedPlatform}
+                  isDarkMode={isDarkMode}
+                />
+                
+                <div id="platform-selector">
+                  <PlatformSelector
+                    selectedPlatform={selectedPlatform}
+                    onPlatformChange={setSelectedPlatform}
+                    copyCount={copyCount}
+                    isDarkMode={isDarkMode}
+                  />
+                </div>
+              </div>
+              
+              <div id="output-section">
+                <OutputSection
+                  input={input}
+                  selectedPlatform={selectedPlatform}
+                  isDarkMode={isDarkMode}
+                  recordCopy={recordCopy}
+                />
+              </div>
             </div>
-          </div>
-          
-          <div id="output-section">
-            <OutputSection
-              input={input}
-              selectedPlatform={selectedPlatform}
-              isDarkMode={isDarkMode}
-            />
-          </div>
-        </div>
+          </>
+        ) : (
+          <StatsSection
+            totalFormattedCount={analyticsSummary.totalFormattedCount}
+            platformUsage={analyticsSummary.platformUsage}
+            dailyActivity={analyticsSummary.dailyActivity}
+            mostActiveDay={analyticsSummary.mostActiveDay}
+            totalCharacters={analyticsSummary.totalCharacters}
+            isDarkMode={isDarkMode}
+            onClearStats={() => {
+              clearAnalytics();
+            }}
+          />
+        )}
       </main>
       
       <footer className={`text-center py-8 text-sm transition-all duration-300 ${
